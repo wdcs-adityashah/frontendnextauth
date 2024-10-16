@@ -1,27 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useSession,signIn } from "next-auth/react";
-import { Session } from "next-auth";
-import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
-  const { data: session, status }: { data: Session | null, status: string } = useSession();
+  const { data: session } = useSession();
 
-  // Check if the session is loading
-  if (status === "loading") {
-    return <div>Loading...</div>; // Optionally show a loading state
-  }
-  if(session){
-    redirect("/dashboard")
-  }
-  return !session && (
+  return !session ? (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
-           <button onClick={() => signIn()}>        
-            Please Login To See The Content
-           </button>
-
-     
+      <Link href="/login" className="border px-4 py-2 text-red-400 rounded">
+        Please Login To See The Content
+      </Link>
     </div>
-  )
+  ) : (
+    <div className="flex min-h-screen flex-col items-center justify-between p-24">
+      <p className="text-green-400 border p-5"> Welcome Back Buddy 😊</p>
+    </div>
+  );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { signOut, useSession,signIn } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -27,7 +27,9 @@ const Navbar = () => {
             {!session ? (
               <>
                 <li className="mx-4 mb-5">
-                <button onClick={() => signIn()} className="text-white font-bold">Log in</button>
+                  <Link href="/login" className="text-white font-bold">
+                    Login
+                  </Link>
                 </li>
                 <li className="mx-4 mb-[2rem]">
                   <Link href="/register" className="text-white font-bold">
