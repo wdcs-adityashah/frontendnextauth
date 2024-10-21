@@ -5,10 +5,10 @@ import TwitterProvider from "next-auth/providers/twitter";
 import GithubProvider from "next-auth/providers/github";
 import LinkedInProvider from "next-auth/providers/linkedin";
 import bcrypt from "bcryptjs";
-import User from "@/models/User"; 
-import connectDB from "@/config/db"; 
+import User from "@/models/User";
+import connectDB from "@/config/db";
 
- const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -40,6 +40,7 @@ import connectDB from "@/config/db";
             }
           }
         } catch (error: any) {
+          console.error("Error during authorization:", error);
           throw new Error(error.message);
         }
         throw new Error("Invalid credentials");
@@ -59,35 +60,61 @@ import connectDB from "@/config/db";
     TwitterProvider({
       clientId: process.env.TWITTER_CONSUMER_KEY as string,
       clientSecret: process.env.TWITTER_CONSUMER_SECRET as string,
+      version: "2.0", // opt-in to Twitter OAuth 2.0
     }),
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
     LinkedInProvider({
-      clientId: process.env.LINKEDIN_CLIENT_ID as string,
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET as string,
+      clientId: process.env.LINKEDIN_CLIENT_ID || "",
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET || "",
+      client: { token_endpoint_auth_method: "client_secret_post" },
+      issuer: "https://www.linkedin.com",
+      profile: (profile) => ({
+        id: profile.sub,
+        name: profile.name,
+        email: profile.email,
+        image: profile.picture,
+      }),
+      wellKnown:
+        "https://www.linkedin.com/oauth/.well-known/openid-configuration",
+      authorization: {
+        params: {
+          scope: "openid profile email",
+        },
+      },
     }),
+
   ],
+
+  pages:{
+signIn:'/pages/auth/signin'
+  },
+    session: {
+    strategy: "jwt",
+    },
   callbacks: {
     async signIn({ account }) {
-      return true; 
+      return true;
     },
     async jwt({ token, user }) {
+      console.log(user, "user");
       if (user) {
-        token.id = user.id; 
+        token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: any; }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (session.user) {
         session.user.id = token.id; // Send user ID to the client
       }
       return session;
-    }
+    },
   },
   debug: true,
 };
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
+export { authOptions }; // Exporting authOptions

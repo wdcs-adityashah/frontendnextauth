@@ -6,8 +6,14 @@ import { Session } from "next-auth";
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  const { data: session, status }: { data: Session | null, status: string } = useSession();
-
+  const { data: session, status: sessionStatus }: { data: Session | null, status: string } = useSession();
+  if(session === null){
+    redirect("/api/auth/signin?callbackUrl=https%3A%2F%2F1433-27-109-9-122.ngrok-free.app%2Flogin")
+  }
+  if (sessionStatus === "authenticated") {
+    console.log(sessionStatus)
+    redirect("/dashboard");
+  }
   // Check if the session is loading
   if (status === "loading") {
     return <div>Loading...</div>; // Optionally show a loading state
