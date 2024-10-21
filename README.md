@@ -3,8 +3,11 @@ This project is a Next.js application bootstrapped with Create Next App, impleme
 
 Steps to start Project
  1. cd nextauthtask
+
  2. npm install bcryptjs mongoose next-auth react-toastify
+    
  3.npm run dev
+ 
  4.Open your browser and go to: http://localhost:3000
 
 Authentication Options
