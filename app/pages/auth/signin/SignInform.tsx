@@ -4,15 +4,14 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import './signin-form.css'; // Import the CSS file for styles
-interface SignInFormProps {
-    children: React.ReactNode; // Accept children as props
-  }
+import { useRouter } from "next/navigation";
+
   
   const SignInForm: React.FC<SignInFormProps> = ({ children }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await signIn("credentials", {
@@ -24,8 +23,7 @@ interface SignInFormProps {
     if (result?.error) {
       setError(result.error);
     } else {
-      // Redirect to the dashboard or any other page on success
-      window.location.href = "/dashboard";
+      router.push('/dashboard');
     }
   };
 
@@ -43,6 +41,7 @@ interface SignInFormProps {
             placeholder="Enter your email"
             required
             className="form-input"
+
           />
         </div>
         <div className="form-group">
@@ -58,9 +57,9 @@ interface SignInFormProps {
             className="form-input"
           />
         </div>
-        {error && <p className="error-message">{error}</p>}
         <button type="submit" className="submit-button">Sign In with credentials</button>
-        {children}
+        {error && <p className="error-message">{error}</p>}
+
       </form>
     </div>
   );
