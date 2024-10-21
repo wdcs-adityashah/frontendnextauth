@@ -1,7 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This project is a Next.js application bootstrapped with Create Next App, implementing NextAuth for authentication. Users can log in using multiple authentication options.
 
-This is a next auth authentication project in which user can login with multiple authentication options.
 
 Steps to start Project
  1. cd nextauthtask
- 2. npm run dev
+ 2. npm install bcryptjs mongoose next-auth react-toastify
+ 3.npm run dev
+ 4.Open your browser and go to: http://localhost:3000
+
+Authentication Options
+
+This project supports multiple authentication methods, including:
+
+1.Email and Password
+2.OAuth (Google, GitHub, Twitter,LinkedIn)
+
+Project Structure
+pages/: Custom page for next auth authentication .
+components/: Reusable components.
+api/:Create routes for next auth application.
