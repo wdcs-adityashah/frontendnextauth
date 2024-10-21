@@ -22,7 +22,7 @@ export default async function SignIn() {
     <div className="page">
       <div className="signin">
         <div className="card">
-          <SignInForm>
+          <SignInForm/>
             <hr />
             <div className="credential-signin">
               {providers &&
@@ -33,7 +33,7 @@ export default async function SignIn() {
                       <SignInButton
                         providerId={provider.id}
                         providerName={provider.name}
-                        logoUrl={`https://authjs.dev/img/providers/${provider.id}.svg`} // Adjust logo URL accordingly
+                        logoUrl={`https://authjs.dev/img/providers/${provider.id}.svg`} 
                       />{" "}
                     </div>
                   ))}
@@ -41,7 +41,6 @@ export default async function SignIn() {
             <div className="register-container">
               <RegisterButton />
             </div>
-          </SignInForm>
         </div>
       </div>
     </div>
