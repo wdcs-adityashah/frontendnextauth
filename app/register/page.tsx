@@ -134,7 +134,7 @@ const Register = () =>{
               Already have an account?{" "}
               <Link
                 className="text-center text-blue-500 hover:underline mt-2"
-                href="/login"
+                href="/api/auth/signin?callbackUrl=https%3A%2F%2F1433-27-109-9-122.ngrok-free.app%2Flogin"
               >
                 Login In
               </Link>

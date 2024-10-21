@@ -16,6 +16,10 @@ const Login = () => {
       console.log(sessionStatus)
       router.push("/dashboard");
     }
+    else if(sessionStatus != "unauthenticated"){
+      console.log(sessionStatus)
+      router.push("/login");
+    }
   }, [sessionStatus, router]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

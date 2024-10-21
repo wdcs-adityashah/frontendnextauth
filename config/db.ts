@@ -12,7 +12,6 @@ const connectDB = async ():Promise<void> => {
 
      } catch (error:any) {
         console.error(`Error:${error.message}`);
-        process.exit(1);
      }
 }
 
