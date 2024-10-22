@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useSession,signIn } from "next-auth/react";
 import { Session } from "next-auth";
 import { redirect } from "next/navigation";
@@ -15,7 +14,7 @@ export default function Home() {
     redirect("/dashboard");
   }
   // Check if the session is loading
-  if (status === "loading") {
+  if (sessionStatus === "loading") {
     return <div>Loading...</div>; // Optionally show a loading state
   }
   if(session){

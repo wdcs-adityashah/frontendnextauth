@@ -10,9 +10,14 @@ const connectDB = async ():Promise<void> => {
       await mongoose.connect(mongoUri);
       console.log('Successfully connected to mongoDB');
 
-     } catch (error:any) {
-        console.error(`Error:${error.message}`);
-     }
+     } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error(`Error: ${error.message}`);
+        } else {
+          console.error(`Error: ${String(error)}`);
+        }
+      }
+    
 }
 
 export default connectDB;

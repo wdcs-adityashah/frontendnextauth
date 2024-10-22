@@ -9,15 +9,14 @@ import { FormEvent } from 'react';
 
 const Login = () => {
   const router = useRouter();
-  const { data: session, status: sessionStatus } = useSession();
+  const { status: sessionStatus } = useSession(); // Remove 'session' as it's not used
 
   useEffect(() => {
     if (sessionStatus === "authenticated") {
-      console.log(sessionStatus)
+      console.log(sessionStatus);
       router.push("/dashboard");
-    }
-    else if(sessionStatus != "unauthenticated"){
-      console.log(sessionStatus)
+    } else if (sessionStatus !== "unauthenticated") {
+      console.log(sessionStatus);
       router.push("/login");
     }
   }, [sessionStatus, router]);
@@ -31,6 +30,7 @@ const Login = () => {
 
     if (!email || !password) {
       toast.error("Please fill all the input fields.");
+      return; // Ensure you return here to avoid further execution
     }
 
     const res = await signIn("credentials", {
@@ -40,10 +40,7 @@ const Login = () => {
     });
 
     if (res?.error) {
-      if (res?.url) {
-        router.push("/dashboard");
-      }
-      toast.error("Invalid Credientals");
+      toast.error("Invalid Credentials");
     } else {
       toast.success("Successfully Logged In.");
       router.push("/dashboard");
@@ -96,7 +93,7 @@ const Login = () => {
                 Login
               </button>
             </div>
-            <span>Don't have an acccount?</span>{" "}
+            <span>Don't have an account?</span>{" "}
             <Link
               className="text-center text-blue-500 hover:underline mt-2"
               href="/register"
@@ -109,4 +106,5 @@ const Login = () => {
     )
   );
 };
+
 export default Login;

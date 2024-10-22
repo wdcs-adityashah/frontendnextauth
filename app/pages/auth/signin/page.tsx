@@ -1,5 +1,5 @@
 // app/auth/signin/page.tsx
-import { getProviders, signIn } from "next-auth/react";
+import { getProviders } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
