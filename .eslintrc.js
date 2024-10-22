@@ -22,9 +22,11 @@ module.exports = {
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:react/recommended',
+        'plugin:prettier/recommended', // Add this line
     ],
     plugins: ['@typescript-eslint', 'react'],
     rules: {
-        // Your existing rules
+       'no-explicit-any': 'error',
+    'no-unused-vars': 'warn',
     },
 };

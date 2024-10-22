@@ -2,7 +2,7 @@
 import { getProviders } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import authOptions from "@/app/lib/authOptions";
 import SignInButton from "./SignInButton"; // Import the Client Component
 import RegisterButton from "./RegisterButton"; // Import the Client Component
 import "./signin.css";
