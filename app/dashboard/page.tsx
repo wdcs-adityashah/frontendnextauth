@@ -1,6 +1,5 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import Image from "next/image";
 
 const Dashboard = async (): Promise<JSX.Element> => {
   const session = await getServerSession();
@@ -29,17 +28,7 @@ const Dashboard = async (): Promise<JSX.Element> => {
       <h1 className="text-green-400 border p-4 mb-7">
         Welcome, {firstName}{lastName}!
       </h1>
-      {/* Uncomment this section if user images are available */}
-      {/* {user?.image && (
-        <Image
-          src={user?.image}
-          alt={user?.name || 'User Image'}
-          width={50}
-          height={50}
-          className="rounded-full"
-        />
-      )} */}
-      <p className="text-gray-600">You are logged in with {user.email}</p>
+           <p className="text-gray-600">You are logged in with {user.email}</p>
     </div>
   );
 };

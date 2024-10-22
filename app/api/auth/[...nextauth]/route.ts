@@ -1,4 +1,5 @@
-import NextAuth, { AuthOptions } from "next-auth";
+import NextAuth, { AuthOptions, User as NextAuthUser,Account, Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import TwitterProvider from "next-auth/providers/twitter";
@@ -7,6 +8,16 @@ import LinkedInProvider from "next-auth/providers/linkedin";
 import bcrypt from "bcryptjs";
 import User from "@/models/User";
 import connectDB from "@/config/db";
+
+interface Credentials {
+  email: string;
+  password: string;
+}
+
+interface AuthUser extends NextAuthUser {
+  id: string; // Assuming you have an id field in your User model
+}
+
 
 const authOptions: AuthOptions = {
   providers: [
@@ -23,7 +34,7 @@ const authOptions: AuthOptions = {
           type: "password",
         },
       },
-      async authorize(credentials) {
+      async authorize(credentials: Credentials): Promise<AuthUser | null> {
         if (!credentials) {
           throw new Error("Credentials are required");
         }
@@ -36,12 +47,14 @@ const authOptions: AuthOptions = {
               user.password
             );
             if (isPasswordCorrect) {
-              return user; // Return user object on successful authentication
+              return { ...user.toObject(), id: user._id }; // Return user object with id
             }
           }
-        } catch (error: any) {
-          console.error("Error during authorization:", error);
-          throw new Error(error.message);
+        } catch (error) {
+          if (error instanceof Error) {
+            console.error("Error during authorization:", error);
+            throw new Error(error.message);
+          }
         }
         throw new Error("Invalid credentials");
       },
@@ -77,37 +90,35 @@ const authOptions: AuthOptions = {
         email: profile.email,
         image: profile.picture,
       }),
-      wellKnown:
-        "https://www.linkedin.com/oauth/.well-known/openid-configuration",
+      wellKnown: "https://www.linkedin.com/oauth/.well-known/openid-configuration",
       authorization: {
         params: {
           scope: "openid profile email",
         },
       },
     }),
-
   ],
 
-  pages:{
-signIn:'/pages/auth/signin'
+  pages: {
+    signIn: '/pages/auth/signin',
   },
-    session: {
+  session: {
     strategy: "jwt",
-    },
+  },
   callbacks: {
-    async signIn({ account }) {
-      return true;
+    async signIn({ account }: { account: Account | null }) {
+      return true; // Or your logic
     },
-    async jwt({ token, user }) {
-      console.log(user, "user");
+    async jwt({ token, user }: { token: JWT; user?: AuthUser | null }) {
       if (user) {
-        token.id = user.id;
+        token.id = user.id; // Ensure `user` has an `id` property
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
+    
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (session.user) {
-        session.user.id = token.id; // Send user ID to the client
+        session.user.id = token.id; // Assign directly
       }
       return session;
     },

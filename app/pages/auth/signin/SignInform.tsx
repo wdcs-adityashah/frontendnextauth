@@ -7,7 +7,7 @@ import './signin-form.css'; // Import the CSS file for styles
 import { useRouter } from "next/navigation";
 
   
-  const SignInForm: React.FC<SignInFormProps> = ({ children }) => {
+  const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

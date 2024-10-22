@@ -56,9 +56,13 @@ const Register = () =>{
             } else if (res.status === 201) {
                 router.push("/login");
             }
-        } catch (error: any) {
-            toast.error("Something went wrong. Please try again.");
-        }
+        }catch (error: unknown) {
+          if (error instanceof Error) {
+              toast.error(error.message);
+          } else {
+              toast.error("Something went wrong. Please try again.");
+          }
+      }
     };
     
     if (sessionStatus === "loading") {
