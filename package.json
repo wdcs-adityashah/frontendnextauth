@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "lint": "eslint --config eslint.config.mjs 'app/**/*.{ts,tsx,js,jsx}' 'components/**/*.{ts,tsx,js,jsx}'",
+    "prebuild": "npm run lint",
+    "prestart": "npm run lint",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --config eslint.config.mjs 'app/**/*.{ts,tsx,js,jsx}' 'components/**/*.{ts,tsx,js,jsx}'",
     "export": "next export"
   },
   "dependencies": {
@@ -30,6 +32,8 @@
     "@typescript-eslint/parser": "^8.11.0",
     "eslint": "^9.13.0",
     "eslint-config-next": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.1",
     "globals": "^15.11.0",
     "postcss": "^8",
